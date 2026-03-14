@@ -1,1 +1,1206 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>What does your body actually need? — faystack</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=DM+Mono:wght@300;400;500&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;1,9..40,300&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg: #0c0d0c;
+  --surface: #141514;
+  --surface2: #1c1e1c;
+  --surface3: #242624;
+  --border: rgba(255,255,255,0.07);
+  --border2: rgba(255,255,255,0.13);
+  --border3: rgba(255,255,255,0.2);
+  --text: #eae8e1;
+  --text2: #9a9891;
+  --text3: #5e5d59;
+  --green: #b8f050;
+  --blue: #52c4f0;
+  --purple: #b080ff;
+  --amber: #f0a830;
+  --coral: #f07868;
+  --pink: #f0a0c4;
+  --green-dim: rgba(184,240,80,0.08);
+  --blue-dim: rgba(82,196,240,0.08);
+  --purple-dim: rgba(176,128,255,0.08);
+  --amber-dim: rgba(240,168,48,0.08);
+  --serif: 'Instrument Serif', Georgia, serif;
+  --sans: 'DM Sans', sans-serif;
+  --mono: 'DM Mono', monospace;
+}
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+html { scroll-behavior: smooth; }
+
+body {
+  font-family: var(--sans);
+  background: var(--bg);
+  color: var(--text);
+  min-height: 100vh;
+  line-height: 1.6;
+}
+
+/* ── Layout ── */
+.page { max-width: 720px; margin: 0 auto; padding: 0 12px 60px; }
+
+/* ── Hero ── */
+.hero {
+  padding: 36px 0 40px;
+  border-bottom: 1px solid var(--border);
+  margin-bottom: 48px;
+}
+.hero-tag {
+  font-family: var(--mono);
+  font-size: 10px;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--text3);
+  margin-bottom: 20px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+.hero-tag::before {
+  content: '';
+  width: 24px;
+  height: 1px;
+  background: var(--text3);
+}
+.hero h1 {
+  font-family: var(--serif);
+  font-size: clamp(34px, 6vw, 52px);
+  font-weight: 400;
+  line-height: 1.08;
+  letter-spacing: -0.01em;
+  margin-bottom: 20px;
+}
+.hero h1 em {
+  font-style: italic;
+  color: var(--text2);
+}
+.hero-sub {
+  font-size: 15px;
+  color: var(--text2);
+  line-height: 1.65;
+  max-width: 480px;
+  font-weight: 300;
+  margin-bottom: 28px;
+}
+.hero-meta {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  flex-wrap: wrap;
+}
+.meta-pill {
+  font-family: var(--mono);
+  font-size: 9px;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--text3);
+  border: 1px solid var(--border2);
+  border-radius: 20px;
+  padding: 4px 10px;
+}
+.meta-pill a { color: var(--text2); text-decoration: none; }
+.meta-pill a:hover { color: var(--text); }
+
+/* ── Section labels ── */
+.section-label {
+  font-family: var(--mono);
+  font-size: 9px;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--text3);
+  margin-bottom: 20px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+.section-label::after {
+  content: '';
+  flex: 1;
+  height: 1px;
+  background: var(--border);
+}
+
+/* ── Decision tree ── */
+.tree-wrap { margin-bottom: 60px; }
+
+.progress-bar {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  margin-bottom: 24px;
+  height: 8px;
+}
+.prog-dot {
+  width: 6px; height: 6px;
+  border-radius: 50%;
+  background: var(--border2);
+  transition: all 0.3s;
+  flex-shrink: 0;
+}
+.prog-dot.done { background: var(--text3); }
+.prog-dot.active { background: var(--text2); width: 20px; border-radius: 3px; }
+
+/* breadcrumb trail */
+.trail {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 5px;
+  margin-bottom: 16px;
+  min-height: 10px;
+}
+.trail-crumb {
+  font-family: var(--mono);
+  font-size: 9px;
+  letter-spacing: 0.05em;
+  color: var(--text3);
+  background: var(--surface2);
+  border-radius: 4px;
+  padding: 3px 8px;
+  display: flex;
+  align-items: center;
+  gap: 5px;
+}
+.trail-crumb span { color: var(--text2); }
+
+/* back button */
+.back-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-family: var(--mono);
+  font-size: 9px;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--text3);
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 0;
+  margin-bottom: 20px;
+  transition: color 0.15s;
+  min-height: 18px;
+}
+.back-btn:hover { color: var(--text2); }
+.back-btn::before { content: '←'; font-size: 11px; }
+
+/* node card */
+.node-card {
+  background: var(--surface);
+  border: 1px solid var(--border2);
+  border-radius: 18px;
+  padding: 30px 28px 26px;
+  animation: nodeIn 0.22s ease;
+}
+@keyframes nodeIn {
+  from { opacity: 0; transform: translateY(8px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+.node-step {
+  font-family: var(--mono);
+  font-size: 9px;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--text3);
+  margin-bottom: 10px;
+}
+.node-q {
+  font-family: var(--serif);
+  font-size: 22px;
+  font-weight: 400;
+  line-height: 1.25;
+  color: var(--text);
+  margin-bottom: 6px;
+}
+.node-hint {
+  font-size: 13px;
+  color: var(--text3);
+  font-style: italic;
+  margin-bottom: 26px;
+  line-height: 1.5;
+  font-weight: 300;
+}
+.options-grid {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+.opt-btn {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  background: var(--surface2);
+  border: 1px solid var(--border2);
+  border-radius: 11px;
+  padding: 13px 16px;
+  cursor: pointer;
+  transition: background 0.15s, border-color 0.15s, transform 0.1s;
+  text-align: left;
+  width: 100%;
+  color: var(--text);
+  font-family: var(--sans);
+}
+.opt-btn:hover {
+  background: var(--surface3);
+  border-color: var(--border3);
+}
+.opt-btn:active { transform: scale(0.99); }
+.opt-icon {
+  width: 32px; height: 32px;
+  border-radius: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 15px;
+  flex-shrink: 0;
+  background: var(--surface3);
+}
+.opt-text { flex: 1; }
+.opt-label { font-size: 14px; font-weight: 400; line-height: 1.3; }
+.opt-sub { font-size: 11px; color: var(--text3); margin-top: 2px; font-weight: 300; }
+.opt-arrow {
+  font-size: 12px;
+  color: var(--text3);
+  flex-shrink: 0;
+  transition: transform 0.15s, color 0.15s;
+}
+.opt-btn:hover .opt-arrow { transform: translateX(3px); color: var(--text2); }
+
+/* result card */
+.result-card {
+  border-radius: 18px;
+  border: 1px solid var(--border2);
+  overflow: hidden;
+  animation: nodeIn 0.22s ease;
+}
+.result-top {
+  padding: 26px 28px 20px;
+  border-bottom: 1px solid var(--border);
+}
+.result-badge {
+  font-size: 28px;
+  margin-bottom: 10px;
+}
+.result-category {
+  font-family: var(--mono);
+  font-size: 9px;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  margin-bottom: 4px;
+}
+.result-need {
+  font-family: var(--serif);
+  font-size: 30px;
+  font-weight: 400;
+  letter-spacing: -0.01em;
+  line-height: 1.1;
+  margin-bottom: 12px;
+}
+.result-why {
+  font-size: 14px;
+  line-height: 1.65;
+  font-weight: 300;
+}
+.result-tips {
+  padding: 20px 28px;
+  background: var(--surface);
+}
+.tips-label {
+  font-family: var(--mono);
+  font-size: 9px;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--text3);
+  margin-bottom: 12px;
+}
+.tip-item {
+  display: flex;
+  gap: 10px;
+  padding: 7px 0;
+  border-bottom: 1px solid var(--border);
+  font-size: 13px;
+  color: var(--text2);
+  line-height: 1.5;
+  font-weight: 300;
+}
+.tip-item:last-child { border-bottom: none; }
+.tip-arrow { flex-shrink: 0; font-size: 11px; margin-top: 2px; }
+.result-actions {
+  padding: 16px 28px;
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+  border-top: 1px solid var(--border);
+  background: var(--surface);
+}
+.btn-restart {
+  font-family: var(--mono);
+  font-size: 9px;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  background: transparent;
+  border: 1px solid var(--border2);
+  color: var(--text3);
+  padding: 9px 14px;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: color 0.15s, border-color 0.15s;
+}
+.btn-restart:hover { color: var(--text); border-color: var(--text3); }
+
+/* result accent theming */
+.result-card[data-cat="water"]  { --rc: var(--blue);   --rb: var(--blue-dim); }
+.result-card[data-cat="food"]   { --rc: var(--green);  --rb: var(--green-dim); }
+.result-card[data-cat="sleep"]  { --rc: var(--purple); --rb: var(--purple-dim); }
+.result-card[data-cat="nervous"]{ --rc: var(--amber);  --rb: var(--amber-dim); }
+.result-card[data-cat="exec"]   { --rc: var(--pink);   --rb: rgba(240,160,196,0.08); }
+.result-card[data-cat="mood"]   { --rc: var(--green);  --rb: var(--green-dim); }
+.result-card[data-cat="body"]   { --rc: var(--coral);  --rb: rgba(240,120,104,0.08); }
+.result-top { background: var(--rb, var(--surface)); }
+.result-category { color: var(--rc, var(--text3)); }
+.result-need { color: var(--rc, var(--text)); }
+.result-why { color: var(--text2); }
+.tip-arrow { color: var(--rc, var(--text3)); }
+
+/* ── Reference table ── */
+.ref-section { margin-bottom: 60px; }
+.ref-tabs {
+  display: flex;
+  gap: 6px;
+  flex-wrap: wrap;
+  margin-bottom: 20px;
+}
+.ref-tab {
+  font-family: var(--mono);
+  font-size: 9px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  border: 1px solid var(--border2);
+  background: transparent;
+  color: var(--text3);
+  padding: 6px 12px;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: all 0.15s;
+}
+.ref-tab:hover { color: var(--text2); border-color: var(--border3); }
+.ref-tab.active { color: var(--text); border-color: var(--text3); background: var(--surface2); }
+.ref-table { display: none; }
+.ref-table.active { display: block; }
+.ref-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 0;
+  border-bottom: 1px solid var(--border);
+  padding: 11px 0;
+}
+.ref-row:first-child { border-top: 1px solid var(--border); }
+.ref-symptom {
+  font-size: 13px;
+  color: var(--text2);
+  padding-right: 16px;
+  font-weight: 300;
+  line-height: 1.45;
+}
+.ref-hack {
+  font-size: 13px;
+  color: var(--text);
+  font-weight: 300;
+  line-height: 1.45;
+}
+.ref-need-tag {
+  display: inline-block;
+  font-family: var(--mono);
+  font-size: 8px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  border-radius: 3px;
+  padding: 2px 6px;
+  margin-right: 6px;
+  vertical-align: middle;
+}
+
+/* ── Download bar ── */
+.download-bar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  border: 1px solid var(--border2);
+  border-radius: 14px;
+  padding: 18px 22px;
+  margin-bottom: 60px;
+  flex-wrap: wrap;
+  background: var(--surface);
+}
+.dl-text strong {
+  display: block;
+  font-size: 14px;
+  font-weight: 500;
+  margin-bottom: 3px;
+}
+.dl-text p { font-size: 12px; color: var(--text2); font-weight: 300; }
+.dl-btn {
+  font-family: var(--mono);
+  font-size: 9px;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  background: var(--surface2);
+  border: 1px solid var(--border3);
+  color: var(--text);
+  padding: 11px 18px;
+  border-radius: 9px;
+  cursor: pointer;
+  text-decoration: none;
+  white-space: nowrap;
+  transition: background 0.15s, border-color 0.15s;
+  display: inline-block;
+}
+.dl-btn:hover { background: var(--surface3); border-color: var(--text3); }
+.dl-btn-soon {
+  font-family: var(--mono);
+  font-size: 9px;
+  letter-spacing: 0.08em;
+  color: var(--text3);
+  border: 1px dashed var(--border2);
+  padding: 11px 16px;
+  border-radius: 9px;
+  white-space: nowrap;
+  flex-shrink: 0;
+}
+
+/* ── Community section ── */
+.community-section { margin-bottom: 60px; }
+.community-intro {
+  font-size: 14px;
+  color: var(--text2);
+  line-height: 1.65;
+  font-weight: 300;
+  margin-bottom: 20px;
+}
+.suggestion-form {
+  background: var(--surface);
+  border: 1px solid var(--border2);
+  border-radius: 14px;
+  padding: 22px;
+  margin-bottom: 24px;
+}
+.form-row { margin-bottom: 14px; }
+.form-label {
+  font-family: var(--mono);
+  font-size: 9px;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--text3);
+  display: block;
+  margin-bottom: 7px;
+}
+.form-input, .form-textarea {
+  width: 100%;
+  background: var(--surface2);
+  border: 1px solid var(--border2);
+  border-radius: 9px;
+  padding: 11px 14px;
+  font-family: var(--sans);
+  font-size: 13px;
+  color: var(--text);
+  outline: none;
+  transition: border-color 0.15s;
+  font-weight: 300;
+}
+.form-input:focus, .form-textarea:focus {
+  border-color: var(--border3);
+}
+.form-input::placeholder, .form-textarea::placeholder { color: var(--text3); }
+.form-textarea { resize: vertical; min-height: 80px; }
+.form-row-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+@media (max-width: 500px) { .form-row-2 { grid-template-columns: 1fr; } }
+.submit-btn {
+  font-family: var(--mono);
+  font-size: 9px;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  background: var(--surface2);
+  border: 1px solid var(--border3);
+  color: var(--text);
+  padding: 11px 20px;
+  border-radius: 9px;
+  cursor: pointer;
+  transition: background 0.15s;
+  width: 100%;
+  margin-top: 4px;
+}
+.submit-btn:hover { background: var(--surface3); }
+.submit-note {
+  font-size: 11px;
+  color: var(--text3);
+  margin-top: 10px;
+  text-align: center;
+  font-weight: 300;
+}
+.submit-success {
+  display: none;
+  text-align: center;
+  padding: 20px;
+  font-size: 14px;
+  color: var(--text2);
+}
+
+/* ── Footer ── */
+.footer {
+  border-top: 1px solid var(--border);
+  padding-top: 28px;
+  font-family: var(--mono);
+  font-size: 10px;
+  color: var(--text3);
+  line-height: 1.8;
+  letter-spacing: 0.03em;
+}
+.footer a { color: var(--text2); text-decoration: underline; text-underline-offset: 3px; }
+.footer-row { display: flex; justify-content: space-between; flex-wrap: wrap; gap: 8px; }
+
+/* ── Print ── */
+@media print {
+  body { background: white; color: #111; }
+  .tree-wrap, .community-section, .download-bar { display: none; }
+  .ref-table { display: block !important; }
+  :root { --bg: white; --text: #111; --text2: #555; --border: #ddd; }
+}
+</style>
+</head>
+<body>
+<div class="page">
+
+  <!-- ── HERO ── -->
+  <div class="hero">
+    <div class="hero-tag">ADHD · Need Blindness · Community Cheat Sheet</div>
+    <h1>Your body is <em>lying</em> to you.<br>Here's what it actually wants.</h1>
+    <p class="hero-sub">A cheat sheet for when need blindness, ADHD, or chronic depletion makes it impossible to read your own body's signals. Parse the symptom. Find the actual need.</p>
+    <div class="hero-meta">
+      <span class="meta-pill">v1.0 · March 2026</span>
+      <span class="meta-pill">Source: <a href="https://vt.tiktok.com/ZSuPbTxcJ/" target="_blank">@untitled.entity on TikTok</a></span>
+      <span class="meta-pill">Not medical advice</span>
+    </div>
+  </div>
+
+  <!-- ── DECISION TREE ── -->
+  <div class="tree-wrap">
+    <div class="section-label">Interactive decision tree</div>
+    <div class="back-row" id="back-row"></div>
+    <div class="progress-bar" id="progress"></div>
+    <div class="trail" id="trail"></div>
+    <div id="tree-content"></div>
+  </div>
+
+  <!-- ── DOWNLOAD TEASER ── -->
+  <div class="download-bar">
+    <div class="dl-text">
+      <strong>Printable / downloadable version</strong>
+      <p>A proper print-ready PDF is in the works — if this gets enough love it'll happen. Share it if it helped. :)</p>
+    </div>
+    <span class="dl-btn-soon">coming soon maybe 👀</span>
+  </div>
+
+  <!-- ── REFERENCE TABLE ── -->
+  <div class="ref-section">
+    <div class="section-label">Full reference — all hacks</div>
+    <div class="ref-tabs" id="ref-tabs"></div>
+    <div id="ref-tables"></div>
+  </div>
+
+  <!-- ── COMMUNITY SUGGESTIONS ── -->
+  <div class="community-section">
+    <div class="section-label">Suggest a hack</div>
+    <p class="community-intro">Got a body signal → real need mapping that's not here? Submit it. Good ones get added to the next version with credit. Parsed from the same TikTok comment energy this whole thing came from.</p>
+    <div class="suggestion-form" id="suggestion-form">
+      <div class="form-row-2">
+        <div class="form-row">
+          <label class="form-label">When I feel...</label>
+          <input class="form-input" type="text" placeholder="e.g. random urge to cry" id="f-symptom">
+        </div>
+        <div class="form-row">
+          <label class="form-label">My body actually needs...</label>
+          <input class="form-input" type="text" placeholder="e.g. magnesium" id="f-need">
+        </div>
+      </div>
+      <div class="form-row">
+        <label class="form-label">The hack / what to do</label>
+        <textarea class="form-textarea" placeholder="e.g. take magnesium glycinate before bed, this is actually a deficiency signal not sadness" id="f-hack"></textarea>
+      </div>
+      <div class="form-row-2">
+        <div class="form-row" style="margin:0">
+          <label class="form-label">Category</label>
+          <select class="form-input" id="f-cat">
+            <option value="">— pick one —</option>
+            <option>Food / hunger</option>
+            <option>Water / hydration</option>
+            <option>Sleep / rest</option>
+            <option>Nervous system</option>
+            <option>Executive dysfunction</option>
+            <option>Body / physical</option>
+            <option>Other</option>
+          </select>
+        </div>
+        <div class="form-row" style="margin:0">
+          <label class="form-label">Source (optional)</label>
+          <input class="form-input" type="text" placeholder="TikTok, Reddit, therapist, etc." id="f-source">
+        </div>
+      </div>
+      <button class="submit-btn" onclick="submitSuggestion()">Submit suggestion →</button>
+      <p class="submit-note">Submissions are reviewed before adding. Not a live comment section — just a queue.</p>
+    </div>
+    <div class="submit-success" id="submit-success">
+      <div style="font-size:24px;margin-bottom:10px">✓</div>
+      <div>Got it — thanks. Good ones get added to v1.1.</div>
+    </div>
+  </div>
+
+  <!-- ── FOOTER ── -->
+  <div class="footer">
+    <div class="footer-row">
+      <div>
+        <strong style="color:var(--text2)">faystack.com</strong><br>
+        v1.0 · Community cheat sheet · March 2026
+      </div>
+      <div style="text-align:right">
+        Source: <a href="https://vt.tiktok.com/ZSuPbTxcJ/" target="_blank">@untitled.entity on TikTok</a><br>
+        Extracted 14 March 2026
+      </div>
+    </div>
+    <div style="margin-top:14px;padding-top:14px;border-top:1px solid var(--border)">
+      Community-sourced observations. Not medical advice. Consult a healthcare provider for persistent symptoms.
+    </div>
+  </div>
+
+</div><!-- /page -->
+
+<script>
+// ══════════════════════════════════════════════════════════
+//  DATA
+// ══════════════════════════════════════════════════════════
+const TREE = {
+  start: {
+    q: "How do you feel right now?",
+    hint: "Pick the closest match — you can always go back",
+    opts: [
+      { label: "Something feels mentally off",    sub: "anxious, foggy, flat, or moody",       icon: "🧠", next: "mental" },
+      { label: "Something feels physically off",  sub: "craving, pain, tension, or run down",  icon: "🫀", next: "physical" },
+      { label: "I can't make myself do things",   sub: "paralysed, stuck, too much friction",  icon: "⚡", next: "exec" },
+    ]
+  },
+  mental: {
+    q: "What kind of mentally off?",
+    hint: "Pick the one that fits most right now",
+    opts: [
+      { label: "Anxious / doom / dread",         sub: "racing thoughts, something bad is coming", icon: "😰", next: "anxiety" },
+      { label: "Flat / foggy / low",             sub: "can't think, low energy, blah",            icon: "😶‍🌫️", next: "flat" },
+      { label: "Moody / hate-y",                 sub: "irritable, shame, hate vibes",             icon: "😤", next: "moody" },
+    ]
+  },
+  anxiety: {
+    q: "Had water in the last 2 hours?",
+    hint: "Not coffee. Actual water.",
+    opts: [
+      { label: "No", sub: "", icon: "🚫", next: "r_water" },
+      { label: "Yes — hydrated", sub: "", icon: "✓", next: "anxiety2" },
+    ]
+  },
+  anxiety2: {
+    q: "Slept less than 6 hours last night?",
+    hint: "Broken sleep counts as less",
+    opts: [
+      { label: "Yes — under-slept", sub: "", icon: "😴", next: "r_sleep" },
+      { label: "No — slept fine",   sub: "", icon: "✓",  next: "r_grounding" },
+    ]
+  },
+  flat: {
+    q: "Reaching for caffeine or nicotine to function?",
+    hint: "That 'I need a coffee before I'm human' feeling",
+    opts: [
+      { label: "Yes — absolutely",   sub: "", icon: "☕", next: "r_food" },
+      { label: "No, not really",     sub: "", icon: "✓", next: "flat2" },
+    ]
+  },
+  flat2: {
+    q: "Eaten a real meal in the last 4 hours?",
+    hint: "A snack doesn't count — actual food with protein",
+    opts: [
+      { label: "No — haven't eaten properly", sub: "", icon: "🚫", next: "r_food" },
+      { label: "Yes — just ate",              sub: "", icon: "✓",  next: "flat3" },
+    ]
+  },
+  flat3: {
+    q: "Running on less than 7 hours sleep?",
+    hint: "Cumulative debt counts, not just last night",
+    opts: [
+      { label: "Yes — sleep deprived", sub: "", icon: "😴", next: "r_sleep" },
+      { label: "No — slept enough",    sub: "", icon: "✓",  next: "r_rest" },
+    ]
+  },
+  moody: {
+    q: "Which flavour of moody?",
+    hint: "Be honest, this is just for you",
+    opts: [
+      { label: "I hate everyone around me", sub: "irritable, snappy",          icon: "😠", next: "r_food" },
+      { label: "I hate myself",             sub: "shame spiral, self-critical", icon: "😔", next: "r_shower" },
+      { label: "Everyone hates me",         sub: "burden feeling, despair",     icon: "💭", next: "r_sleep" },
+      { label: "I hate the entire world",   sub: "world is wrong, everything's bad", icon: "🌧", next: "r_outside" },
+    ]
+  },
+  physical: {
+    q: "What kind of physical feeling?",
+    hint: "",
+    opts: [
+      { label: "Random craving",         sub: "wanting something specific out of nowhere", icon: "🤤", next: "craving" },
+      { label: "Body pain or aches",     sub: "random pain, cramps, headache",             icon: "🤕", next: "pain" },
+      { label: "Tense / stiff / heavy",  sub: "body holding stress or tension",            icon: "😤", next: "tension" },
+      { label: "Cold / run down / sick", sub: "cold hands, heavy, depleted",              icon: "🥶", next: "cold" },
+      { label: "Full but still snacky",  sub: "just ate but can't stop",                  icon: "🍪", next: "r_thirst_hunger" },
+    ]
+  },
+  craving: {
+    q: "What are you craving?",
+    hint: "Pick the closest match",
+    opts: [
+      { label: "Alcohol or something sweet", sub: "lolly, juice, soft drink",          icon: "🍋", next: "r_sugar" },
+      { label: "Something salty",            sub: "chips, crackers, anything salty",   icon: "🧂", next: "r_electrolytes" },
+      { label: "Fruit",                      sub: "random urge for fruit",             icon: "🍓", next: "r_thirst" },
+      { label: "Chocolate",                  sub: "specific chocolate craving",        icon: "🍫", next: "r_protein" },
+      { label: "Coffee (but not really)",    sub: "habitual, not actually tired",      icon: "☕", next: "r_potassium" },
+      { label: "Weird / can't name it",      sub: "unplaceable craving",               icon: "🤷", next: "r_magnesium" },
+    ]
+  },
+  pain: {
+    q: "What kind of pain?",
+    hint: "",
+    opts: [
+      { label: "Random aches, no cause",  sub: "", icon: "💪", next: "r_water_pain" },
+      { label: "Cramps",                  sub: "", icon: "😣", next: "r_cramps" },
+      { label: "Headache",                sub: "", icon: "🤯", next: "r_headache" },
+      { label: "Whole body heavy / sick", sub: "", icon: "🤒", next: "r_electrolytes_sick" },
+    ]
+  },
+  tension: {
+    q: "Have you moved your body today?",
+    hint: "",
+    opts: [
+      { label: "No / barely",         sub: "", icon: "🪑", next: "r_movement" },
+      { label: "Yes — still tense",   sub: "", icon: "😬", next: "r_nervous" },
+    ]
+  },
+  cold: {
+    q: "Are you drinking enough fluids?",
+    hint: "",
+    opts: [
+      { label: "No — haven't drunk much",    sub: "", icon: "🚫", next: "r_water_warm" },
+      { label: "Yes — still cold and tired", sub: "", icon: "✓",  next: "r_electrolytes_cold" },
+    ]
+  },
+  exec: {
+    q: "What does the block look like?",
+    hint: "Pick the closest",
+    opts: [
+      { label: "Can't start at all",          sub: "frozen, staring, can't begin",         icon: "🧊", next: "exec_start" },
+      { label: "Body won't cooperate",        sub: "can't get up, can't shower, paralysed", icon: "🛏", next: "exec_body" },
+      { label: "Everything has too much friction", sub: "tasks feel exhausting before starting", icon: "🪨", next: "exec_friction" },
+      { label: "Everything is just too much", sub: "overwhelm, don't know where to start",  icon: "🌊", next: "halt" },
+    ]
+  },
+  exec_start: {
+    q: "What does 'can't start' look like?",
+    hint: "",
+    opts: [
+      { label: "Frozen / staring at it",     sub: "", icon: "🧊", next: "r_micro" },
+      { label: "Distracted / can't focus",   sub: "", icon: "🌀", next: "r_bodydb" },
+      { label: "Task feels too huge to begin",sub:"", icon: "🏔", next: "r_5min" },
+    ]
+  },
+  exec_body: {
+    q: "Which body block?",
+    hint: "",
+    opts: [
+      { label: "Can't get out of bed",    sub: "", icon: "🛏", next: "r_bed" },
+      { label: "Can't face the shower",   sub: "", icon: "🚿", next: "r_shower_exec" },
+      { label: "Can't start work",        sub: "homework, laptop, task", icon: "💻", next: "r_hw" },
+    ]
+  },
+  exec_friction: {
+    q: "What kind of friction?",
+    hint: "",
+    opts: [
+      { label: "Daily tasks feel exhausting", sub: "dishes, bins, basic stuff", icon: "🪣", next: "r_friction" },
+      { label: "Can't decide what to eat",    sub: "decision fatigue around food", icon: "🍽", next: "r_safefood" },
+      { label: "Want to smoke / zone out",    sub: "reaching for a distraction",  icon: "🌫", next: "r_smoke" },
+    ]
+  },
+  halt: {
+    q: "HALT — which one is it?",
+    hint: "Hungry · Angry · Lonely · Tired — one of these is almost always the root",
+    opts: [
+      { label: "Hungry",            sub: "when did you last eat?",        icon: "🍽", next: "r_food" },
+      { label: "Angry / dysregulated", sub: "something wound you up",     icon: "😠", next: "r_regulate" },
+      { label: "Lonely",            sub: "under-connected, isolated",     icon: "💭", next: "r_lonely" },
+      { label: "Tired",             sub: "physically or mentally depleted",icon: "😴", next: "r_sleep" },
+    ]
+  },
+};
+
+const RESULTS = {
+  r_water: { cat:"water", badge:"💧", need:"Drink Water",
+    why:"Dehydration mimics anxiety almost perfectly — racing thoughts, sense of doom, low-grade panic. Your brain is ~73% water and doesn't function calmly when depleted. Drink before you spiral.",
+    tips:["Drink a full glass right now, before doing anything else","Add a pinch of salt or electrolytes if it's been a hot or sweaty day","Sparkling water helps if plain water feels unappealing","Set a recurring reminder — ADHD brains forget to drink all day"] },
+  r_sleep: { cat:"sleep", badge:"🌙", need:"Sleep",
+    why:"Sleep deprivation dysregulates the amygdala and prefrontal cortex — the brain's emotional control centres. The dread, overwhelm, and low mood are neurological, not situational. No amount of reframing fixes a tired brain.",
+    tips:["Magnesium glycinate 300–400mg, 30–60 min before bed","Don't make important decisions right now — your threat assessment is off","Dim lights 1 hour before bed to help ADHD brains start the shutdown process","Low-dose melatonin (0.5–1mg) if your sleep timing is shifted"] },
+  r_grounding: { cat:"sleep", badge:"🌿", need:"Grounding",
+    why:"You're slept and hydrated but still anxious — this is likely stress-based anxiety rather than a physical deficit. Your nervous system needs a reset, not a substance.",
+    tips:["Peppermint tea — activates the vagus nerve","Cold water on your face or wrists — fast nervous system reset","5-minute walk outside if possible","Box breathing: 4 counts in, 4 hold, 4 out, 4 hold"] },
+  r_food: { cat:"food", badge:"🍽", need:"Food",
+    why:"Caffeine and nicotine are appetite suppressants. When blood sugar drops, your brain reads it as exhaustion, irritability, and brain fog — not hunger. With ADHD or need blindness the hunger signal itself often doesn't surface.",
+    tips:["Eat something real before reaching for another coffee","Protein + fat holds longer than carbs alone (eggs, nuts, cheese)","Set meal reminders — hyperfocus makes skipping meals too easy","Keep no-prep snacks accessible for depleted moments"] },
+  r_rest: { cat:"sleep", badge:"😮‍💨", need:"Rest / Reset",
+    why:"Fed, hydrated, slept — but still flat. This is mental fatigue or overstimulation, not a physical deficit. Your brain needs genuine downtime, not more input or pressure to be productive.",
+    tips:["Screen-off time — even 20 minutes makes a difference","Low-stimulation activity: shower, walk, instrumental music","Don't push through — ADHD burnout is real and compounding","Give yourself permission to be unproductive right now"] },
+  r_shower: { cat:"mood", badge:"🚿", need:"Shower",
+    why:"Warm water triggers the parasympathetic nervous system — the rest-and-digest state. It's not about being clean; it's a physical state change that interrupts the shame or spiral loop.",
+    tips:["You don't have to wash your hair — just get in","Warm or hot water on the back of your neck specifically","Even a 3-minute shower counts for the nervous system reset","This is why 'have you tried showering' is actually valid advice"] },
+  r_outside: { cat:"mood", badge:"🌤", need:"Go Outside",
+    why:"Sunlight directly regulates cortisol and serotonin. Fresh air increases oxygen to the prefrontal cortex. Even 10 minutes shifts your nervous system state — the world-hating feeling is a stuck state, not a fact.",
+    tips:["10 minutes minimum for a measurable effect","Don't have a destination — just walk around the block","Natural light works even on cloudy days","Combine with a warm drink if you need an excuse to go out"] },
+  r_sugar: { cat:"nervous", badge:"🍋", need:"Sugar",
+    why:"Alcohol cravings are frequently the brain's shortcut signal for a blood sugar dip. Alcohol converts to glucose fast — the body is pattern-matching from past experience, not actually craving alcohol. Most common in the 3–5pm window.",
+    tips:["Lemonade, juice, or a piece of fruit works quickly","A sweet drink + small snack steadies the curve longer","If it happens at the same time daily, it's a meal spacing issue","Once the craving passes, eat a proper snack with protein too"] },
+  r_electrolytes: { cat:"nervous", badge:"⚡", need:"Electrolytes",
+    why:"Salt cravings signal electrolyte depletion — sodium, potassium, or magnesium. Common after sweating, high stress periods, or not eating much. Your body is asking specifically, not randomly.",
+    tips:["Pinch of salt stirred into water","Coconut water or an electrolyte drink","A salty snack is fine — your body is asking for it specifically","If it's chronic, look at your overall diet for mineral gaps"] },
+  r_thirst: { cat:"water", badge:"💧", need:"Thirst",
+    why:"Craving fruit is often a thirst signal — fruit is 80–90% water. Your body has associated the sweet, juicy quality with hydration. Drink water first, then eat fruit if you still want it.",
+    tips:["Drink a full glass of water first","If you still want fruit after, eat the fruit — no harm","This is especially common mid-afternoon","ADHD brains often register thirst as food cravings"] },
+  r_thirst_hunger: { cat:"water", badge:"💧", need:"Thirst (not hunger)",
+    why:"If you just ate a full meal and still feel snacky, you're almost certainly confusing thirst for hunger. The brain's signals for the two overlap significantly, especially with ADHD or need blindness.",
+    tips:["Drink a full glass of water and wait 10 minutes","The snacky feeling usually resolves on its own","This is one of the most common need-blindness mix-ups","Keep water visible so you drink it before reaching for food"] },
+  r_protein: { cat:"food", badge:"🥩", need:"Protein",
+    why:"Chocolate cravings (especially dark chocolate) are frequently a protein or magnesium signal. Your body associates chocolate with both. Try the protein source first — the craving often disappears.",
+    tips:["Eggs, cheese, nuts, or a protein drink","Greek yoghurt is a fast accessible option","If the craving remains after protein, try magnesium glycinate","Pre-cut or pre-portioned protein snacks lower the barrier"] },
+  r_potassium: { cat:"food", badge:"🍌", need:"Potassium",
+    why:"Habitual coffee cravings — where you reach for it out of pattern but don't actually feel tired — can indicate a potassium dip. Your body has learned to associate coffee with getting through the afternoon.",
+    tips:["Banana or coconut water first — try waiting 20 min","If you still want the coffee after, have it","Other sources: potato, avocado, leafy greens","Track whether the craving reduces when you eat more potassium-rich foods"] },
+  r_magnesium: { cat:"food", badge:"🥜", need:"Magnesium",
+    why:"Unplaceable, weird, hard-to-name cravings are a classic magnesium deficiency signal. Magnesium is involved in over 300 biochemical processes — deficiency is extremely common, especially with high stress.",
+    tips:["Magnesium glycinate is the most bioavailable form","Trail mix (nuts + seeds) is a quick dietary source","Dark chocolate also contains magnesium (so that craving makes sense)","Supplement before bed — also helps with sleep quality"] },
+  r_water_pain: { cat:"water", badge:"💧", need:"Drink Water",
+    why:"Dehydration causes muscle cramps, tension headaches, and generalised aching. Before reaching for painkillers, drink water and wait 20 minutes — it resolves a surprising proportion of random body pain.",
+    tips:["Drink two full glasses of water first","Warm water or tea helps the muscles relax faster","Check if you've been sitting in one position too long as well","If pain persists after hydrating, then investigate further"] },
+  r_cramps: { cat:"water", badge:"💧", need:"Warmth + Hydrate",
+    why:"Cramps are usually a combination of dehydration, electrolyte imbalance, and muscle tension. Warmth directly relaxes the muscle. Check if you also need to use the bathroom — a full bladder can cause cramping sensations.",
+    tips:["Warm water or chamomile / ginger tea","Heat pack or hot water bottle on the area","Gentle movement or stretching — not vigorous","Check if you need to go to the bathroom"] },
+  r_headache: { cat:"water", badge:"💧", need:"Water + Posture check",
+    why:"The majority of everyday headaches are caused by dehydration, tension in the neck and jaw, or a combination. Drink water and consciously relax your jaw — most people are clenching without realising.",
+    tips:["Drink two full glasses of water","Consciously unclench your jaw and relax your neck","Check your screen height — eye strain causes tension headaches","If it's behind your eyes, it's often dehydration"] },
+  r_electrolytes_sick: { cat:"nervous", badge:"⚡", need:"Electrolytes",
+    why:"Whole-body heaviness and that vague sick feeling — where nothing hurts specifically but everything feels wrong — is often electrolyte depletion rather than illness. Try rehydrating with electrolytes before assuming you're coming down with something.",
+    tips:["Coconut water or an electrolyte drink first","Lie down in a cool, dark room if possible","Eat a light salty snack","If you're genuinely unwell, rest and see a doctor"] },
+  r_movement: { cat:"nervous", badge:"🚶", need:"Movement",
+    why:"Physical tension without movement stores stress in the body as muscle tightness. Your nervous system is primed to discharge through movement — 5 minutes is enough to shift the state significantly.",
+    tips:["5-min walk is enough — doesn't need to be a workout","Stretch your neck, jaw, and shoulders first — that's where tension hides","Shake your body out if walking feels like too much","Cold water on your face before moving helps kick-start it"] },
+  r_nervous: { cat:"nervous", badge:"🫁", need:"Nervous System Reset",
+    why:"If you've moved your body but are still tense, this is overstimulation rather than physical tension. Your nervous system is stuck in a high-alert state and needs a specific reset, not more activity.",
+    tips:["Shower — the strongest nervous system reset available at home","Slow deep breaths, exhale twice as long as you inhale","Cold water on face or wrists — vagus nerve activation","Peppermint tea also activates the vagus nerve"] },
+  r_water_warm: { cat:"water", badge:"💧", need:"Warm Water",
+    why:"Cold extremities combined with low fluid intake is a clear dehydration + poor circulation signal. Warm fluids are absorbed faster and directly improve peripheral circulation — cold hands often resolve within minutes.",
+    tips:["Warm or hot water, or herbal tea","Wrap your hands around the warm cup","Add electrolytes or a pinch of salt if you've been very depleted","Movement also helps circulation — even a short walk"] },
+  r_electrolytes_cold: { cat:"nervous", badge:"⚡", need:"Electrolytes",
+    why:"If you're drinking fluids but still feeling run down, depleted, or cold, the issue is likely mineral balance rather than volume. Plain water doesn't replace electrolytes lost through stress, sweating, or poor nutrition.",
+    tips:["Coconut water or electrolyte drink","Pinch of salt and a small amount of sugar stirred into water","Eat a mineral-dense snack: nuts, seeds, or leafy greens","Check if you've been eating enough overall — restriction depletes fast"] },
+  r_micro: { cat:"exec", badge:"⚡", need:"Micro Step",
+    why:"Task paralysis (frozen staring) happens when the brain's threat response activates around the task. The scale of the task doesn't matter — the nervous system is treating it as a threat. The fix is to shrink the action to something that can't be threatening.",
+    tips:["Don't do the task. Do the first 10 seconds of the task","Open the document. That's it — nothing else","Set a 2-minute timer and give yourself permission to stop after","The paralysis usually breaks once you have begun, however small"] },
+  r_bodydb: { cat:"exec", badge:"👥", need:"Body Double",
+    why:"ADHD brains have lower dopamine baseline and are highly responsive to social presence. Another person nearby — even silently — activates the frontal lobe enough to start and maintain tasks. This is a genuine neurological phenomenon, not a crutch.",
+    tips:["Work next to anyone — a friend, a café, even a video call","StudyTogether, Focusmate, or YouTube 'study with me' videos work","You don't need to talk — presence is the mechanism","Even having a podcast or background noise with voices can help"] },
+  r_5min: { cat:"exec", badge:"⏱", need:"5-Min Rule",
+    why:"When the whole task feels impossible, your brain is overwhelmed by the total scope. The 5-minute commitment bypasses this because 5 minutes is psychologically safe — it can't go that badly wrong. Starting activates the reward pathway.",
+    tips:["Commit to 5 minutes only — out loud or in writing","Set a visible timer","You are genuinely allowed to stop at 5 min if you want to","You almost never will want to stop once you've started"] },
+  r_bed: { cat:"exec", badge:"🦶", need:"Wiggle Toes",
+    why:"Can't-get-out-of-bed paralysis is a combination of inertia, low dopamine on waking, and sometimes depressive low. The body needs a tiny physical action to break the loop — it's not laziness, it's neurological.",
+    tips:["Wiggle your toes — seriously, start there","Then move a leg, then shift to sitting","Give yourself 15 minutes from wiggling toes to vertical — no pressure","Don't reach for your phone before getting up"] },
+  r_shower_exec: { cat:"exec", badge:"💧", need:"Just Turn It On",
+    why:"Shower paralysis is one of the most common ADHD executive dysfunction experiences. The task 'shower' is too large and ambiguous. Shrinking it to a single concrete micro-action — 'turn on the water' — removes the activation energy requirement.",
+    tips:["Just turn the water on. You don't have to get in","Stand in the doorway with the water running for a bit","You have permission to get undressed in stages","Once the water is warm and running, getting in is usually easy"] },
+  r_hw: { cat:"exec", badge:"💻", need:"Open the Laptop",
+    why:"'Do homework' or 'do work' is a large abstract task. 'Open the laptop' is a concrete physical action. Your brain can process it without triggering the avoidance response. Starting is the hardest part — the rest follows.",
+    tips:["Open the laptop. Close everything else if needed","Navigate to the specific file or page — that's your second step","Don't open email or social media first","Put your phone face-down or in another room before opening the laptop"] },
+  r_friction: { cat:"exec", badge:"📋", need:"Reduce Friction",
+    why:"ADHD brains have a lower threshold for task activation. When daily life has too many small decisions and steps, cognitive resources deplete fast. Reducing friction isn't laziness — it's removing unnecessary load from an already taxed executive function system.",
+    tips:["Paper plates on the worst days — genuinely fine","Bigger bins so you empty them less often","Pre-cut fruit and vegetables in the fridge","Lay out tomorrow's clothes the night before — remove one morning decision"] },
+  r_safefood: { cat:"exec", badge:"📝", need:"Safe Food List",
+    why:"Decision fatigue is a real cognitive phenomenon — the brain's capacity for decisions is finite. When you're already depleted, having to decide what to eat can feel genuinely impossible. Pre-deciding removes the decision when you can't make it.",
+    tips:["Write a list of 5–10 foods you can always eat, even on the worst days","Include some junk — a hot chip day is better than not eating","Pin it somewhere visible, not in your notes app","Rotate the list when you get bored, but keep it updated"] },
+  r_smoke: { cat:"exec", badge:"🍵", need:"Redirect the Urge",
+    why:"The urge to smoke or zone out in this context is usually boredom, understimulation, or comfort-seeking — not nicotine withdrawal. Your brain wants routine, a small ritual, or something to do with your hands.",
+    tips:["Go outside — often the 'outside' part is what you actually wanted","Make tea or another warm drink — it's a ritual replacement","Colouring, puzzles, or something with your hands and low cognitive load","Identify if it happens at specific times — often a habit trigger, not a craving"] },
+  r_regulate: { cat:"nervous", badge:"🫁", need:"Regulate First",
+    why:"Anger or dysregulation is a physiological state, not a character flaw. The prefrontal cortex (reasoning) goes offline when the body is in stress response. You can't think your way out — you have to physically downregulate first.",
+    tips:["Cold water on face or wrists — fastest physiological reset","Peppermint tea activates the vagus nerve","Physical exertion discharges the stress response if safe to do so","Don't make decisions or send messages until you've downregulated"] },
+  r_lonely: { cat:"mood", badge:"🌤", need:"Connection",
+    why:"Loneliness is a legitimate physiological state — humans are social animals and isolation triggers the same stress pathways as physical danger. The solution is actual connection, not distraction from the feeling.",
+    tips:["Text or call someone — even a short message counts","Go somewhere with other humans, even a café or library","Co-working or body doubling has a dual benefit here","If reaching out feels too hard, going outside where people are is a starting point"] },
+};
+
+// ══════════════════════════════════════════════════════════
+//  REFERENCE TABLE DATA
+// ══════════════════════════════════════════════════════════
+const REF = [
+  { cat:"food", sym:"😮‍💨", symptom:"Exhausted, edgy, reaching for caffeine to function", hack:"You're hungry. Eat before the coffee.", accent:"var(--green)" },
+  { cat:"food", sym:"😠", symptom:"Hate everyone around you", hack:"You're hungry. Eat something — anything real.", accent:"var(--green)" },
+  { cat:"food", sym:"🍪", symptom:"Full from a meal but still feel snacky", hack:"Drink water. You're confusing thirst for hunger.", accent:"var(--green)" },
+  { cat:"food", sym:"🍫", symptom:"Craving chocolate", hack:"Usually a protein need. Try eggs, nuts, or cheese first.", accent:"var(--green)" },
+  { cat:"food", sym:"☕", symptom:"Craving coffee but don't really feel tired", hack:"May be potassium. Try coconut water or a banana first.", accent:"var(--green)" },
+  { cat:"food", sym:"🤷", symptom:"Weird, unplaceable random craving", hack:"Magnesium deficiency. Trail mix or magnesium supplement.", accent:"var(--green)" },
+  { cat:"food", sym:"🍽", symptom:"Everything sounds terrible but you need to eat", hack:"Keep a 'safe foods' list — even junk beats nothing. Pre-cut fruit lowers friction.", accent:"var(--green)" },
+  { cat:"food", sym:"🧠", symptom:"Brain fog, low functioning", hack:"Eat a real balanced meal. Brain runs on glucose.", accent:"var(--green)" },
+  { cat:"water", sym:"😰", symptom:"Anxious, doom-y, feels like something bad is coming", hack:"Drink water. Dehydration mimics anxiety almost perfectly.", accent:"var(--blue)" },
+  { cat:"water", sym:"💪", symptom:"Random body pain or aches, no clear cause", hack:"Drink water first. Dehydration causes muscle aches.", accent:"var(--blue)" },
+  { cat:"water", sym:"🤒", symptom:"Whole body tired, vaguely sick feeling", hack:"Hydrate with electrolytes — not just plain water.", accent:"var(--blue)" },
+  { cat:"water", sym:"🍺", symptom:"Craving alcohol randomly", hack:"Blood sugar dip. Lemonade, juice, or coke — body pattern-matching, not craving alcohol.", accent:"var(--blue)" },
+  { cat:"water", sym:"🥶", symptom:"Cold hands and feet", hack:"Drink warm or hot water. Circulation and hydration issue.", accent:"var(--blue)" },
+  { cat:"water", sym:"🤯", symptom:"Headache", hack:"Usually dehydration or tension. Drink water, check posture and jaw.", accent:"var(--blue)" },
+  { cat:"water", sym:"🍓", symptom:"Craving fruit", hack:"You're thirsty. Drink water first, then eat fruit if still wanted.", accent:"var(--blue)" },
+  { cat:"water", sym:"🧂", symptom:"Craving salt specifically", hack:"Electrolyte depletion. Pinch of salt in water, coconut water, or electrolyte drink.", accent:"var(--blue)" },
+  { cat:"sleep", sym:"😤", symptom:"Anxious, world-is-crushing moody, overwhelmed for no reason", hack:"Take magnesium glycinate and actually go to sleep.", accent:"var(--purple)" },
+  { cat:"sleep", sym:"💭", symptom:"Everyone hates you / you feel like a burden", hack:"Go to sleep. That specific flavour of despair is almost always tiredness.", accent:"var(--purple)" },
+  { cat:"sleep", sym:"😤", symptom:"High stress, can't wind down", hack:"Peppermint tea, then sleep.", accent:"var(--purple)" },
+  { cat:"nervous", sym:"😵", symptom:"Overstimulated — itchy, no clothes feel comfortable, skin crawling", hack:"Shower. Resets the nervous system. Not about being clean.", accent:"var(--amber)" },
+  { cat:"nervous", sym:"😔", symptom:"Shame spiral / hate yourself", hack:"Shower. Warm water is a physical state change and nervous system reset.", accent:"var(--amber)" },
+  { cat:"nervous", sym:"🚀", symptom:"Fast racing thoughts feeling like anxiety", hack:"Go pee. Full bladder registers as overstimulation in ADHD brains.", accent:"var(--amber)" },
+  { cat:"nervous", sym:"🌫", symptom:"Craving to smoke but don't want to be high", hack:"You're bored or comfort-seeking. Go outside and sit. Replace with tea or colouring.", accent:"var(--amber)" },
+  { cat:"nervous", sym:"😬", symptom:"Body feels weird, vague discomfort", hack:"Stretch. Light movement. Your body is holding tension.", accent:"var(--amber)" },
+  { cat:"nervous", sym:"🌧", symptom:"Hating the world generally", hack:"Go outside. Sunlight and fresh air directly regulate the nervous system.", accent:"var(--amber)" },
+  { cat:"nervous", sym:"😣", symptom:"Cramps", hack:"Tea, gentle movement, check if you need to poop. Warmth helps.", accent:"var(--amber)" },
+  { cat:"nervous", sym:"😤", symptom:"High stress, can't come down", hack:"Peppermint tea activates the vagus nerve. Cold water on face also works fast.", accent:"var(--amber)" },
+  { cat:"exec", sym:"🧊", symptom:"Can't start a task at all — frozen", hack:"Do the first 10 seconds only. Not the task — the first tiny step.", accent:"var(--pink)" },
+  { cat:"exec", sym:"🛏", symptom:"Can't get out of bed", hack:"Wiggle your toes. Then move a leg. Tiny physical actions unstick the paralysis.", accent:"var(--pink)" },
+  { cat:"exec", sym:"🚿", symptom:"Can't make yourself shower", hack:"Just turn the water on. You don't have to get in yet.", accent:"var(--pink)" },
+  { cat:"exec", sym:"💻", symptom:"Can't start work or homework", hack:"Just open the laptop. That's it. One step.", accent:"var(--pink)" },
+  { cat:"exec", sym:"🪨", symptom:"Everything has too much friction daily", hack:"Paper plates, bigger bins, pre-cut food. Reducing friction is smart, not lazy.", accent:"var(--pink)" },
+  { cat:"exec", sym:"🛑", symptom:"HALT — everything is too much", hack:"Ask: Hungry, Angry, Lonely, or Tired? One of these is almost always the root.", accent:"var(--pink)" },
+  { cat:"exec", sym:"👥", symptom:"Can't focus / keep getting distracted from tasks", hack:"Body double — work next to anyone, even a video call. ADHD brains activate with another person present.", accent:"var(--pink)" },
+  { cat:"exec", sym:"🏔", symptom:"Task feels too huge to begin", hack:"5-minute rule: commit to 5 minutes only. You can stop after. You usually won't.", accent:"var(--pink)" },
+  { cat:"exec", sym:"🍽", symptom:"Can't decide what to eat", hack:"Keep a safe food list — even junk. Pre-decide so you don't have to think when depleted.", accent:"var(--pink)" },
+];
+
+const CAT_META = {
+  food:    { label:"Food & Hunger",        accent:"var(--green)",  dim:"var(--green-dim)" },
+  water:   { label:"Water & Hydration",    accent:"var(--blue)",   dim:"var(--blue-dim)" },
+  sleep:   { label:"Sleep & Rest",         accent:"var(--purple)", dim:"var(--purple-dim)" },
+  nervous: { label:"Nervous System",       accent:"var(--amber)",  dim:"var(--amber-dim)" },
+  exec:    { label:"Executive Dysfunction",accent:"var(--pink)",   dim:"rgba(240,160,196,0.08)" },
+};
+
+// ══════════════════════════════════════════════════════════
+//  TREE STATE + RENDER
+// ══════════════════════════════════════════════════════════
+let history = [];
+let current = 'start';
+const MAX_DEPTH = 6;
+
+function render() {
+  renderProgress();
+  renderTrail();
+  renderBack();
+  const content = document.getElementById('tree-content');
+  if (RESULTS[current]) {
+    renderResult(content, current);
+  } else {
+    renderQuestion(content, current);
+  }
+}
+
+function renderProgress() {
+  const el = document.getElementById('progress');
+  let h = '';
+  for (let i = 0; i < MAX_DEPTH; i++) {
+    if (i < history.length) h += '<div class="prog-dot done"></div>';
+    else if (i === history.length && TREE[current]) h += '<div class="prog-dot active"></div>';
+    else h += '<div class="prog-dot"></div>';
+  }
+  if (RESULTS[current]) h = Array(MAX_DEPTH).fill('<div class="prog-dot done"></div>').join('');
+  el.innerHTML = h;
+}
+
+function renderTrail() {
+  const el = document.getElementById('trail');
+  if (!history.length) { el.innerHTML = ''; return; }
+  el.innerHTML = history.map(h => {
+    const node = TREE[h.nodeId];
+    if (!node) return '';
+    const short = h.answer.length > 28 ? h.answer.slice(0,28)+'…' : h.answer;
+    return `<div class="trail-crumb">${short}</div>`;
+  }).join('<div style="color:var(--text3);font-size:10px;display:flex;align-items:center">›</div>');
+}
+
+function renderBack() {
+  const el = document.getElementById('back-row');
+  if (history.length > 0) {
+    el.innerHTML = '<button class="back-btn" onclick="goBack()">Back</button>';
+  } else {
+    el.innerHTML = '';
+  }
+}
+
+function renderQuestion(container, nodeId) {
+  const node = TREE[nodeId];
+  if (!node) return;
+  const optsHtml = node.opts.map((opt,i) => {
+    const isResult = !!RESULTS[opt.next];
+    const sub2 = isResult && RESULTS[opt.next]
+      ? `→ ${RESULTS[opt.next].need}`
+      : opt.sub;
+    return `<button class="opt-btn" onclick="pick('${opt.next}','${escQ(opt.label)}')">
+      <div class="opt-icon">${opt.icon||'→'}</div>
+      <div class="opt-text">
+        <div class="opt-label">${opt.label}</div>
+        ${sub2 ? `<div class="opt-sub">${sub2}</div>` : ''}
+      </div>
+      <div class="opt-arrow">›</div>
+    </button>`;
+  }).join('');
+  container.innerHTML = `<div class="node-card">
+    <div class="node-step">Step ${history.length + 1}</div>
+    <div class="node-q">${node.q}</div>
+    ${node.hint ? `<div class="node-hint">${node.hint}</div>` : '<div style="height:16px"></div>'}
+    <div class="options-grid">${optsHtml}</div>
+  </div>`;
+}
+
+function renderResult(container, rid) {
+  const r = RESULTS[rid];
+  const tipsHtml = r.tips.map(t =>
+    `<div class="tip-item"><div class="tip-arrow">→</div><div>${t}</div></div>`
+  ).join('');
+  container.innerHTML = `<div class="result-card" data-cat="${r.cat}">
+    <div class="result-top">
+      <div class="result-badge">${r.badge}</div>
+      <div class="result-category">Your body needs</div>
+      <div class="result-need">${r.need}</div>
+      <div class="result-why">${r.why}</div>
+    </div>
+    <div class="result-tips">
+      <div class="tips-label">What to do right now</div>
+      ${tipsHtml}
+    </div>
+    <div class="result-actions">
+      <button class="btn-restart" onclick="restart()">↺ Start over</button>
+      <button class="btn-restart" onclick="goBack()">← Try another path</button>
+    </div>
+  </div>`;
+}
+
+function escQ(s) { return s.replace(/'/g,"&#39;"); }
+
+function pick(nextId, label) {
+  history.push({ nodeId: current, answer: label });
+  current = nextId;
+  render();
+  document.getElementById('tree-content').scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+}
+
+function goBack() {
+  if (!history.length) return;
+  const prev = history.pop();
+  current = prev.nodeId;
+  render();
+}
+
+function restart() {
+  history = [];
+  current = 'start';
+  render();
+  document.querySelector('.tree-wrap').scrollIntoView({ behavior: 'smooth', block: 'start' });
+}
+
+// ══════════════════════════════════════════════════════════
+//  REFERENCE TABLES
+// ══════════════════════════════════════════════════════════
+function buildRefTables() {
+  const tabsEl = document.getElementById('ref-tabs');
+  const tablesEl = document.getElementById('ref-tables');
+  const cats = Object.keys(CAT_META);
+
+  tabsEl.innerHTML = cats.map((cat, i) =>
+    `<button class="ref-tab${i===0?' active':''}" onclick="switchTab('${cat}')" id="tab-${cat}">${CAT_META[cat].label}</button>`
+  ).join('');
+
+  cats.forEach((cat, i) => {
+    const rows = REF.filter(r => r.cat === cat);
+    const m = CAT_META[cat];
+    const rowsHtml = rows.map(r => `
+      <div class="ref-row">
+        <div class="ref-symptom">${r.sym} ${r.symptom}</div>
+        <div class="ref-hack">
+          <span class="ref-need-tag" style="background:${m.dim};color:${m.accent}">${m.label.split(' ')[0]}</span>
+          ${r.hack}
+        </div>
+      </div>`).join('');
+    tablesEl.innerHTML += `<div class="ref-table${i===0?' active':''}" id="table-${cat}">${rowsHtml}</div>`;
+  });
+}
+
+function switchTab(cat) {
+  document.querySelectorAll('.ref-tab').forEach(t => t.classList.remove('active'));
+  document.querySelectorAll('.ref-table').forEach(t => t.classList.remove('active'));
+  document.getElementById('tab-'+cat).classList.add('active');
+  document.getElementById('table-'+cat).classList.add('active');
+}
+
+// ══════════════════════════════════════════════════════════
+//  SUGGESTION FORM
+// ══════════════════════════════════════════════════════════
+async function submitSuggestion() {
+  const symptom = document.getElementById('f-symptom').value.trim();
+  const need    = document.getElementById('f-need').value.trim();
+  const hack    = document.getElementById('f-hack').value.trim();
+  const cat     = document.getElementById('f-cat').value;
+  const source  = document.getElementById('f-source').value.trim();
+
+  if (!symptom || !hack) {
+    alert('Fill in at least the symptom and the hack fields.');
+    return;
+  }
+
+  const SHEET_URL = 'https://script.google.com/macros/s/AKfycbzxwGCHBVzu0h3VmFsMsjd0t3cWr5GzdqktM9IIxrKFMOImU0kiVbJKRnSEgMiPpNd5Cw/exec'; // ← paste your /exec URL here
+
+  const btn = document.querySelector('.submit-btn');
+  btn.textContent = 'Sending…';
+  btn.disabled = true;
+
+  try {
+    // Apps Script requires no-cors — success assumed on completion
+    await fetch(SHEET_URL, {
+      method: 'POST',
+      mode: 'no-cors',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ symptom, need, hack, category: cat, source })
+    });
+    document.getElementById('suggestion-form').style.display = 'none';
+    document.getElementById('submit-success').style.display = 'block';
+  } catch(e) {
+    document.getElementById('suggestion-form').style.display = 'none';
+    document.getElementById('submit-success').style.display = 'block';
+  }
+}
+
+// ── Init ──────────────────────────────────────────────────
+render();
+buildRefTables();
+</script>
+</body>
+</html>
 
